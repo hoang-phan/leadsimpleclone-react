@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Contacts from './pages/Contacts';
+import Navbar from './components/Navbar';
 import './App.css';
 
 function App() {
+  const [accessToken, setAccessToken] = useState<string | null>(sessionStorage.accessToken)
+
+  if (!accessToken) {
+    return <Login setAccessToken={setAccessToken} />
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <div className="App">
+        <section className="w-[calc(100%-250px)] absolute top-0 right-0 bottom-0 bg-white">
+          <Routes>
+            <Route path="/" element={<Contacts />} />
+            <Route path="/contacts" element={<Contacts />} />
+          </Routes>
+        </section>
+      </div>
+    </BrowserRouter>
   );
 }
 
