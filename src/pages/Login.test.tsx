@@ -6,7 +6,7 @@ import Login from './Login';
 test('renders login page', async () => {
   render(
     <MockedProvider mocks={[]} addTypename={false}>
-      <Login />
+      <Login setAccessToken={() => null} />
     </MockedProvider>);
   const linkElement = screen.getByText(/Log in/i);
   expect(linkElement).toBeInTheDocument();
