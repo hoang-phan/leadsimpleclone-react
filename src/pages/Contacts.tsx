@@ -50,16 +50,18 @@ function Contacts() {
         {contacts && (
           <table className="text-left p-[24px] w-full mt-4 text-sm">
             <thead>
-              <th className="p-[16px] border-b border-grey">
-                <Checkbox onChange={toggleSelected} checked={selectedAll}/>
-              </th>
-              <th className="p-[16px] border-b border-grey">First name</th>
-              <th className="p-[16px] border-b border-grey">Last name</th>
-              <th className="p-[16px] border-b border-grey">Company name</th>
-              <th className="p-[16px] border-b border-grey">Primary Phone</th>
-              <th className="p-[16px] border-b border-grey">Primary Email</th>
-              <th className="p-[16px] border-b border-grey">Source</th>
-              <th className="p-[16px] border-b border-grey">Created At</th>
+              <tr>
+                <th className="p-[16px] border-b border-grey">
+                  <Checkbox onChange={toggleSelected} checked={selectedAll}/>
+                </th>
+                <th className="p-[16px] border-b border-grey">First name</th>
+                <th className="p-[16px] border-b border-grey">Last name</th>
+                <th className="p-[16px] border-b border-grey">Company name</th>
+                <th className="p-[16px] border-b border-grey">Primary Phone</th>
+                <th className="p-[16px] border-b border-grey">Primary Email</th>
+                <th className="p-[16px] border-b border-grey">Source</th>
+                <th className="p-[16px] border-b border-grey">Created At</th>
+              </tr>
             </thead>
             <tbody className="text-base">
               {contacts.map(({node}: {node: IContact}) => (

@@ -12,6 +12,7 @@ function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string
 
   const [loginFunc, { data, loading, error }] = useLogin();
 
+  
   useEffect(() => {
     if (data?.login) {
       if (data.login.token) {
@@ -31,8 +32,6 @@ function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string
     loginFunc({ variables: { email, password } });
   }
 
-  console.log(errorMessage)
-
   return (
     <div className="flex flex-col items-center justify-center bg-[#1b3e60] h-screen w-full">
       <div className="flex flex-col items-center justify-center h-full w-[300px]">
@@ -51,6 +50,9 @@ function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string
             className="w-full bg-white"
             value={email}
             onChange={({target}) => setEmail(target.value)}
+            inputProps={{
+              "data-testid": "email-input",
+            }}
           />
         </Box>
         <Box className="my-3 px-2 pt-1 bg-white w-full">
@@ -61,12 +63,16 @@ function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string
             type="password"
             value={password}
             onChange={({target}) => setPassword(target.value)}
+            inputProps={{
+              "data-testid": "password-input",
+            }}
           />
         </Box>
         <Button
           variant="contained"
           className="w-full font-bold"
           onClick={handleLogin}
+          data-testid="login-button"
         >
           Login
         </Button>
