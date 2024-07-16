@@ -65,3 +65,18 @@ test('logins and views contacts', async () => {
   expect(screen.getByText('12345678')).toBeInTheDocument();
   expect(screen.getByText('12/12/24')).toBeInTheDocument();
 });
+
+test('logouts', async () => {
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <App />
+    </MockedProvider>);
+
+  await screen.findByText('Logout');
+  await userEvent.click(screen.getByTestId('logout-button'))
+
+  await screen.findByText('Log in');
+  expect(screen.getByTestId('email-input')).toBeInTheDocument();
+  expect(screen.getByTestId('password-input')).toBeInTheDocument();
+  expect(screen.getByTestId('login-button')).toBeInTheDocument();
+});

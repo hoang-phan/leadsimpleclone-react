@@ -8,15 +8,20 @@ import './App.css';
 function App() {
   const [accessToken, setAccessToken] = useState<string | null>(sessionStorage.accessToken)
 
+  const logout = () => {
+    sessionStorage.removeItem('accessToken');
+    setAccessToken(null);
+  }
+
   if (!accessToken) {
     return <Login setAccessToken={setAccessToken} />
   }
 
   return (
     <BrowserRouter>
-      <Navbar />
-      <div className="App">
-        <section className="w-[calc(100%-250px)] absolute top-0 right-0 bottom-0 bg-white">
+      <div className="App h-screen overflow-hidden">
+        <Navbar logout={logout} />
+        <section className="w-[calc(100%-250px)] absolute top-0 right-0 bottom-0 bg-white overflow-scroll">
           <Routes>
             <Route path="/" element={<Contacts />} />
             <Route path="/contacts" element={<Contacts />} />
