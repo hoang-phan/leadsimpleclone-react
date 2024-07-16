@@ -15,7 +15,7 @@ const mocks = [{
   },
   result: {
     data: {
-      login: { token: "12345", error: null }
+      login: { token: "12345", email: "test@login.com" ,error: null }
     }
   }
 },
@@ -64,6 +64,9 @@ test('logins and views contacts', async () => {
   expect(screen.getByText('john.cap@jc.com')).toBeInTheDocument();
   expect(screen.getByText('12345678')).toBeInTheDocument();
   expect(screen.getByText('12/12/24')).toBeInTheDocument();
+
+  // User information
+  expect(screen.getByText('test@login.com')).toBeInTheDocument();
 });
 
 test('logouts', async () => {

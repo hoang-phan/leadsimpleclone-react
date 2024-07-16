@@ -6,7 +6,10 @@ import Login from './Login';
 test('renders login page', async () => {
   render(
     <MockedProvider mocks={[]} addTypename={false}>
-      <Login setAccessToken={() => null} />
+      <Login
+        setUserInfo={(token: string, email: string) => {}}
+        logout={() => {}}
+      />
     </MockedProvider>);
   const linkElement = screen.getByText(/Log in/i);
   expect(linkElement).toBeInTheDocument();

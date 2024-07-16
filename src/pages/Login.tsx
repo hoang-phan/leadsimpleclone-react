@@ -1,11 +1,19 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import logo from '../logo.svg';
 import { useLogin } from '../services/apiQueries';
 
-function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string | null>>}) {
+function Login(
+  {
+    setUserInfo,
+    logout
+  }:
+  {
+    setUserInfo: (token: string, email: string) => void,
+    logout: () => void
+  }) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -16,17 +24,15 @@ function Login({setAccessToken}: {setAccessToken: Dispatch<SetStateAction<string
   useEffect(() => {
     if (data?.login) {
       if (data.login.token) {
-        sessionStorage.accessToken = data.login.token;
-        setAccessToken(data.login.token);
+        console.log(data.login)
+        setUserInfo(data.login.token, data.login.email);
         setErrorMessage("");
       } else {
-        sessionStorage.removeItem('accessToken')
+        logout();
         setErrorMessage(data.login.error);
-        setEmail("");
-        setPassword("");
       }
     }
-  }, [data])
+  }, [data, setUserInfo, logout]);
 
   const handleLogin = () => {
     loginFunc({ variables: { email, password } });

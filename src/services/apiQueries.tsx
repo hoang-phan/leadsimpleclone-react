@@ -29,6 +29,7 @@ export const LOGIN_QUERY = gql`
   mutation login($email: String!, $password: String!) {
     login(input: { email: $email, password: $password }) {
       token
+      email
       error
     }
   }
