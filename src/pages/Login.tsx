@@ -24,7 +24,6 @@ function Login(
   useEffect(() => {
     if (data?.login) {
       if (data.login.token) {
-        console.log(data.login)
         setUserInfo(data.login.token, data.login.email);
         setErrorMessage("");
       } else {

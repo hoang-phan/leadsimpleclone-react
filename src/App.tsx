@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Ping from './pages/Ping';
 import Login from './pages/Login';
 import Contacts from './pages/Contacts';
 import Navbar from './components/Navbar';
@@ -8,6 +9,7 @@ import './App.css';
 function App() {
   const [accessToken, setAccessToken] = useState<string | null>(sessionStorage.accessToken)
   const [userEmail, setUserEmail] = useState<string | null>(sessionStorage.userEmail)
+  const [serverActive, setServerActive] = useState<boolean>(false);
 
   const logout = () => {
     sessionStorage.removeItem('accessToken');
@@ -20,6 +22,10 @@ function App() {
     setUserEmail(email);
     sessionStorage.accessToken = token;
     sessionStorage.userEmail = email;
+  }
+
+  if (!serverActive) {
+    return <Ping wakeup={() => { setServerActive(true) }}/>
   }
 
   if (!accessToken) {

@@ -1,0 +1,110 @@
+import React, { useState, useEffect } from 'react';
+import { Modal, Box, Typography, IconButton, TextField, Button } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import EmailsForm from './EmailsForm';
+import PhonesForm from './PhonesForm';
+import { IEmail, IPhone, IContact } from '../services/types';
+import { useSaveContact, GET_CONTACTS_QUERY } from '../services/apiQueries';
+import { useApolloClient } from '@apollo/client';
+
+function ContactFormModal({open, handleClose, contact} : {
+  open: boolean, handleClose: () => void, contact?: IContact
+}) {
+  const id = contact?.id;
+  const [emails, setEmails] = useState<IEmail[]>([]);
+  const [phones, setPhones] = useState<IPhone[]>([]);
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [companyName, setCompanyName] = useState<string>("");
+  const [saveContactFunc, { data, loading, error }] = useSaveContact();
+  const client = useApolloClient();
+
+  const saveContact = () => {
+    console.log(id, firstName, lastName, companyName, emails, phones)
+    saveContactFunc({ variables: { id, firstName, lastName, companyName, emails, phones } });
+  };
+
+  useEffect(() => {
+    if (data?.createOrUpdateContact?.id) {
+      handleClose();
+      setFirstName("");
+      setLastName("");
+      setCompanyName("");
+      setEmails([]);
+      setPhones([]);
+      client.refetchQueries({include: [GET_CONTACTS_QUERY]});
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setFirstName(contact?.firstName || "");
+    setLastName(contact?.lastName || "");
+    setCompanyName(contact?.companyName || "");
+    setEmails(contact?.emails || []);
+    setPhones(contact?.phones || []);
+  }, [contact])
+
+  return (
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      className="flex items-center justify-center"
+    >
+      <Box className="bg-white max-w-screen-sm max-h-[calc(100%-64px)] w-[810px]">        
+        <div className="flex justify-between items-center">
+          <h1 id="modal-modal-title" className="text-2xl font-semibold m-1 p-4">Add Contact</h1>
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <div id="modal-modal-description" className="p-4 w-full max-h-[calc(100vh-300px)] overflow-y-auto">
+          <div className="flex justify-between w-full">
+            <Box className="m-1 flex-1 max-w-[50%]">
+              <TextField
+                label="First Name"
+                variant="outlined"
+                className="bg-[#E9ECF0] font-semibold w-full"
+                onChange={({ target }) => setFirstName(target.value)}
+                value={firstName}
+              />
+            </Box>
+            <Box className="m-1 flex-1 max-w-[50%]">
+              <TextField
+                label="Last Name"
+                variant="outlined"
+                className="bg-[#E9ECF0] font-semibold w-full"
+                onChange={({ target }) => setLastName(target.value)}
+                value={lastName}
+              />
+            </Box>
+          </div>
+          <div className="flex justify-between w-full">
+            <Box className="w-full m-1">
+              <TextField
+                label="Company Name"
+                variant="outlined"
+                className="bg-[#E9ECF0] font-semibold w-full"
+                onChange={({ target }) => setCompanyName(target.value)}
+                value={companyName}
+              />
+            </Box>
+          </div>
+
+          <h2 className="text-xl font-semibold m-1 mt-5">Contact Info</h2>
+          <h3 className="text-lg font-semibold m-1 mt-5">Emails</h3>
+          <EmailsForm emails={emails} setEmails={setEmails} />
+          <h3 className="text-lg font-semibold m-1 mt-5">Phones</h3>
+          <PhonesForm phones={phones} setPhones={setPhones} />
+        </div>
+        <Box className="flex justify-end p-4">
+          <Button className="text-[#3E495A] !border-[#3E495A] !text-[#3E495A] !normal-case !mr-2 !font-semibold" variant="outlined" onClick={handleClose}>Cancel</Button>
+          <Button className="bg-[#0E4EB0] !normal-case !font-semibold" variant="contained" onClick={saveContact}>Save Contact</Button>
+        </Box>
+      </Box>
+    </Modal>
+  );
+}
+
+export default ContactFormModal;

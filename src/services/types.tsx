@@ -1,17 +1,21 @@
 export type IPhone = {
+  id: string;
   value: string;
   kind: string;
-}
+  _destroy: string;
+};
 
 export type IEmail = {
+  id: string;
   value: string;
   kind: string;
-}
+  _destroy: string;
+};
 
 export type ISource = {
   id: string;
   name: string;
-}
+};
 
 export type IContact = {
   id: string;
@@ -22,4 +26,4 @@ export type IContact = {
   source: ISource;
   emails: [IEmail];
   phones: [IPhone];
-}
+};
