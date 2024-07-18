@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const GET_CONTACTS_QUERY = gql`
   {
@@ -53,6 +53,18 @@ export const CREATE_OR_UPDATE_CONTACT_QUERY = gql`
   }
 `;
 
+export const DELETE_CONTACT_QUERY = gql`
+  mutation deleteContacts(
+    $ids: [ID!]!
+  ) {
+    deleteContacts(input: {
+      ids: $ids,
+    }) {
+      success
+    }
+  }
+`;
+
 export const LOGIN_QUERY = gql`
   mutation login($email: String!, $password: String!) {
     login(input: { email: $email, password: $password }) {
@@ -62,16 +74,3 @@ export const LOGIN_QUERY = gql`
     }
   }
 `;
-  
-
-export function useGetContacts() {
-  return useQuery(GET_CONTACTS_QUERY);
-}
-
-export function useLogin() {
-  return useMutation(LOGIN_QUERY);
-}
-
-export function useSaveContact() {
-  return useMutation(CREATE_OR_UPDATE_CONTACT_QUERY);
-}

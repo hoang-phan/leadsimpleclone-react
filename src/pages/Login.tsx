@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useMutation } from '@apollo/client';
 import logo from '../logo.svg';
-import { useLogin } from '../services/apiQueries';
+import { LOGIN_QUERY } from '../services/apiQueries';
 
 function Login(
   {
@@ -18,7 +19,7 @@ function Login(
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const [loginFunc, { data, loading, error }] = useLogin();
+  const [loginFunc, { data, loading, error }] = useMutation(LOGIN_QUERY);
 
   
   useEffect(() => {

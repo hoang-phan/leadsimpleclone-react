@@ -4,8 +4,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import EmailsForm from './EmailsForm';
 import PhonesForm from './PhonesForm';
 import { IEmail, IPhone, IContact } from '../services/types';
-import { useSaveContact, GET_CONTACTS_QUERY } from '../services/apiQueries';
-import { useApolloClient } from '@apollo/client';
+import { CREATE_OR_UPDATE_CONTACT_QUERY, GET_CONTACTS_QUERY } from '../services/apiQueries';
+import { useApolloClient, useMutation } from '@apollo/client';
 
 function ContactFormModal({open, handleClose, contact} : {
   open: boolean, handleClose: () => void, contact?: IContact
@@ -16,25 +16,24 @@ function ContactFormModal({open, handleClose, contact} : {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
-  const [saveContactFunc, { data, loading, error }] = useSaveContact();
+  const [saveContactFunc, { data, loading, error }] = useMutation(CREATE_OR_UPDATE_CONTACT_QUERY);
   const client = useApolloClient();
 
   const saveContact = () => {
     console.log(id, firstName, lastName, companyName, emails, phones)
-    saveContactFunc({ variables: { id, firstName, lastName, companyName, emails, phones } });
+    saveContactFunc({
+      variables: { id, firstName, lastName, companyName, emails, phones },
+      onCompleted: () => {
+        handleClose();
+        setFirstName("");
+        setLastName("");
+        setCompanyName("");
+        setEmails([]);
+        setPhones([]);
+        client.refetchQueries({include: [GET_CONTACTS_QUERY]});
+      }
+    });
   };
-
-  useEffect(() => {
-    if (data?.createOrUpdateContact?.id) {
-      handleClose();
-      setFirstName("");
-      setLastName("");
-      setCompanyName("");
-      setEmails([]);
-      setPhones([]);
-      client.refetchQueries({include: [GET_CONTACTS_QUERY]});
-    }
-  }, [data]);
 
   useEffect(() => {
     setFirstName(contact?.firstName || "");

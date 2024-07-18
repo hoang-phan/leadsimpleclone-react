@@ -34,8 +34,8 @@ const mocks = [{
             lastName: 'Carpenter',
             companyName: 'JC Company',
             source: { name: 'Email Lead' },
-            emails: [{ value: 'john.cap@jc.com' }],
-            phones: [{ value: '12345678' }],
+            emails: [{ id: '2', kind: 'personal', value: 'john.cap@jc.com' }],
+            phones: [{ id: '3', kind: 'personal', value: '12345678' }],
             createdAt: '12/12/24',
           }
         }]

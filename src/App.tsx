@@ -9,7 +9,7 @@ import './App.css';
 function App() {
   const [accessToken, setAccessToken] = useState<string | null>(sessionStorage.accessToken)
   const [userEmail, setUserEmail] = useState<string | null>(sessionStorage.userEmail)
-  const [serverActive, setServerActive] = useState<boolean>(false);
+  const [serverActive, setServerActive] = useState<boolean>(process.env.NODE_ENV === 'test');
 
   const logout = () => {
     sessionStorage.removeItem('accessToken');

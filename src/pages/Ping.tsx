@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import alarm from '../alarm.gif';
 
+if (!AbortSignal.timeout) {
+  AbortSignal.timeout = (ms) => {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(new DOMException("TimeoutError")), ms);
+    return controller.signal;
+  };
+}
+
 const healthcheckUrl = process.env.REACT_APP_HEALTHCHECK_URL;
 
 // ping every 10 seconds until the backend server is up
