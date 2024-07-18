@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import logo from '../logo.svg';
 
 function Navbar({logout, email}: {logout: () => void, email: string | null}) {
@@ -30,6 +31,22 @@ function Navbar({logout, email}: {logout: () => void, email: string | null}) {
           <LogoutIcon className="mr-[8px]" />
           Logout
         </div>
+        <a
+          className="cursor-pointer w-full p-[16px] text-[#99A2AE] text-base font-medium block text-left"
+          href="https://github.com/hoang-phan/leadsimpleclone-api"
+          target="_blank"
+        >
+          <GitHubIcon className="mr-[8px]" />
+          Source - Backend
+        </a>
+        <a
+          className="cursor-pointer w-full p-[16px] text-[#99A2AE] text-base font-medium block text-left"
+          href="https://github.com/hoang-phan/leadsimpleclone-react"
+          target="_blank"
+        >
+          <GitHubIcon className="mr-[8px]" />
+          Source - Frontend
+        </a>
       </nav>
     </header>
   );

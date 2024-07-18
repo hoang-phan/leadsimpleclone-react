@@ -92,6 +92,7 @@ function Contacts() {
             <Button
               className="bg-[#0E4EB0] !normal-case !font-semibold"
               variant="contained"
+              onClick={() => alert("Under construction")}
             >
               Create Leads
             </Button>
@@ -99,6 +100,7 @@ function Contacts() {
               className="bg-[#0E4EB0] !normal-case !font-semibold !mx-2"
               variant="contained"
               disabled={numberOfSelected < 2}
+              onClick={() => alert("Under construction")}
             >
               Merge
             </Button>
@@ -121,13 +123,13 @@ function Contacts() {
             </IconButton>
           </Tooltip>
           <Tooltip title="Merge Duplicated Contacts">
-            <IconButton>
+            <IconButton onClick={() => alert("Under construction")}>
               <MergeTypeIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Export Contacts">
             <IconButton>
-              <CloudDownloadIcon />
+              <CloudDownloadIcon onClick={() => alert("Under construction")}/>
             </IconButton>
           </Tooltip>
         </div>
