@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import EmailsForm from './EmailsForm';
 import PhonesForm from './PhonesForm';
 import { IEmail, IPhone, IContact } from '../services/types';
-import { CREATE_OR_UPDATE_CONTACT_QUERY, GET_CONTACTS_QUERY } from '../services/apiQueries';
+import { SAVE_CONTACT_QUERY, GET_CONTACTS_QUERY } from '../services/apiQueries';
 import { useApolloClient, useMutation } from '@apollo/client';
 
 function ContactFormModal({open, handleClose, contact} : {
@@ -16,7 +16,7 @@ function ContactFormModal({open, handleClose, contact} : {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
-  const [saveContactFunc, { data, loading, error }] = useMutation(CREATE_OR_UPDATE_CONTACT_QUERY);
+  const [saveContactFunc, { data, loading, error }] = useMutation(SAVE_CONTACT_QUERY);
   const client = useApolloClient();
 
   const saveContact = () => {

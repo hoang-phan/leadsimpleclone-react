@@ -29,8 +29,8 @@ export const GET_CONTACTS_QUERY = gql`
   }
 `;
 
-export const CREATE_OR_UPDATE_CONTACT_QUERY = gql`
-  mutation createOrUpdateContact(
+export const SAVE_CONTACT_QUERY = gql`
+  mutation saveContact(
     $id: ID,
     $firstName: String!,
     $lastName: String!,
@@ -39,7 +39,7 @@ export const CREATE_OR_UPDATE_CONTACT_QUERY = gql`
     $phones: [PhoneInput!],
     $sourceId: ID
   ) {
-    createOrUpdateContact(input: {
+    saveContact(input: {
       id: $id,
       firstName: $firstName,
       lastName: $lastName,
