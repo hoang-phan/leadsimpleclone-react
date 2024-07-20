@@ -21,7 +21,7 @@ function LeadContactsForm({contacts, setContacts, initLeadNameByContact} : {
   initLeadNameByContact: (contact: IContact) => void,
 }) {
   const [filter, setFilter] = useState<string>("");
-  const { data, loading, error, refetch } = useQuery(SEARCH_CONTACTS_QUERY, {skip: !filter});
+  const { data, refetch } = useQuery(SEARCH_CONTACTS_QUERY, {skip: !filter});
   const [addingContact, setAddingContact] = useState<boolean>(false);
 
   const addContact = (contact: IContact) => {

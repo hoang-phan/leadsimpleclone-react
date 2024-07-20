@@ -4,8 +4,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import LeadContactsForm from './LeadContactsForm';
 import { IContact, ILead, IUser, IStage } from '../services/types';
-import { SAVE_LEAD_QUERY, GET_LEADS_QUERY } from '../services/apiQueries';
-import { useApolloClient, useMutation } from '@apollo/client';
+import { SAVE_LEAD_QUERY, GET_LEADS_QUERY, GET_USERS_QUERY, GET_STAGES_QUERY } from '../services/apiQueries';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
 function LeadFormModal({open, handleClose, lead} : {
   open: boolean, handleClose: () => void, lead?: ILead
@@ -16,6 +16,8 @@ function LeadFormModal({open, handleClose, lead} : {
   const [stage, setStage] = useState<IStage>({} as IStage);
   const [name, setName] = useState<string>("");
   const [saveLeadFunc, { data, loading, error }] = useMutation(SAVE_LEAD_QUERY);
+  const usersData = useQuery(GET_USERS_QUERY).data;
+  const stagesData = useQuery(GET_STAGES_QUERY).data;
   const client = useApolloClient();
 
   const initLeadNameByContact = (contact: IContact) => {
@@ -84,11 +86,9 @@ function LeadFormModal({open, handleClose, lead} : {
                   value={assignee.id}
                   onChange={({ target }) => setAssignee({ id: target.value } as IUser)}
                 >
-                  <MenuItem value="personal">Personal</MenuItem>
-                  <MenuItem value="work">Work</MenuItem>
-                  <MenuItem value="spouse">Spouse</MenuItem>
-                  <MenuItem value="partner">Partner</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
+                  {usersData && usersData.users.map((user: IUser) => (
+                    <MenuItem key={user.id} value={user.id}>{user.email}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>
@@ -101,11 +101,9 @@ function LeadFormModal({open, handleClose, lead} : {
                   value={stage.id}
                   onChange={({ target }) => setStage({ id: target.value } as IStage)}
                 >
-                  <MenuItem value="personal">Personal</MenuItem>
-                  <MenuItem value="work">Work</MenuItem>
-                  <MenuItem value="spouse">Spouse</MenuItem>
-                  <MenuItem value="partner">Partner</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
+                  {stagesData && stagesData.stages.map((stage: IStage) => (
+                    <MenuItem key={stage.id} value={stage.id} style={{color: stage.color}}>{stage.name}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>

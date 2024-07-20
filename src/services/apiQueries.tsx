@@ -148,3 +148,22 @@ export const LOGIN_QUERY = gql`
     }
   }
 `;
+
+export const GET_USERS_QUERY = gql`
+  {
+    users {
+      id
+      email
+    }
+  }
+`;
+
+export const GET_STAGES_QUERY = gql`
+  {
+    stages {
+      id
+      name
+      color
+    }
+  }
+`;
