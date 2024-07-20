@@ -29,6 +29,21 @@ export const GET_CONTACTS_QUERY = gql`
   }
 `;
 
+export const SEARCH_CONTACTS_QUERY = gql`
+  query searchContacts($filter: String) {
+    contacts(first: 20, filter: $filter) {
+      edges {
+        node {
+          id
+          firstName
+          lastName
+          companyName
+        }
+      }
+    }
+  }
+`;
+
 export const SAVE_CONTACT_QUERY = gql`
   mutation saveContact(
     $id: ID,
@@ -58,6 +73,65 @@ export const DELETE_CONTACT_QUERY = gql`
     $ids: [ID!]!
   ) {
     deleteContacts(input: {
+      ids: $ids,
+    }) {
+      success
+    }
+  }
+`;
+
+export const GET_LEADS_QUERY = gql`
+  {
+    leads(first: 1) {
+      edges {
+        node {
+          id
+          name
+          emailsSent
+          callsMade
+          contacts {
+            id
+            firstName
+            lastName
+            companyName
+          }
+          stage {
+            id
+            name
+            color
+          }
+          assignee {
+            id
+            email
+          }
+          createdAt
+        }
+      }
+    }
+  }
+`;
+
+export const SAVE_LEAD_QUERY = gql`
+  mutation saveLead(
+    $id: ID,
+    $name: String!,
+    $contacts: [ContactInput!]
+  ) {
+    saveLead(input: {
+      id: $id,
+      name: $name,
+      contacts: $contacts
+    }) {
+      id
+    }
+  }
+`;
+
+export const DELETE_LEAD_QUERY = gql`
+  mutation deleteLeads(
+    $ids: [ID!]!
+  ) {
+    deleteLeads(input: {
       ids: $ids,
     }) {
       success

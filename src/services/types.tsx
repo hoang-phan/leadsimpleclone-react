@@ -26,4 +26,27 @@ export type IContact = {
   source: ISource;
   emails: [IEmail];
   phones: [IPhone];
+  _destroy: string;
+};
+
+export type ILead = {
+  id: string;
+  name: string;
+  emailsSent: number;
+  callsMade: number;
+  contacts: [IContact];
+  stage: IStage;
+  createdAt: string;
+  assignee: IUser;
+};
+
+export type IStage = {
+  id: string;
+  name: string;
+  color: string;
+};
+
+export type IUser = {
+  id: string;
+  email: string;
 };

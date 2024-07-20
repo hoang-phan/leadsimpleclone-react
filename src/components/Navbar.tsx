@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import PersonIcon from '@mui/icons-material/Person';
+import WorkIcon from '@mui/icons-material/Work';
 import LogoutIcon from '@mui/icons-material/Logout';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import logo from '../logo.svg';
@@ -22,6 +23,10 @@ function Navbar({logout, email}: {logout: () => void, email: string | null}) {
         <NavLink to="/contacts" className="w-full p-[16px] text-[#99A2AE] text-base font-medium hover:bg-[#FFFFFF33] block text-left">
           <PersonIcon className="mr-[8px]" />
           Contacts
+        </NavLink>
+        <NavLink to="/leads" className="w-full p-[16px] text-[#99A2AE] text-base font-medium hover:bg-[#FFFFFF33] block text-left">
+          <WorkIcon className="mr-[8px]" />
+          Leads
         </NavLink>
         <div
           className="cursor-pointer w-full p-[16px] text-[#99A2AE] text-base font-medium block text-left"

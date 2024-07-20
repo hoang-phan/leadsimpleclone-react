@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Ping from './pages/Ping';
 import Login from './pages/Login';
 import Contacts from './pages/Contacts';
+import Leads from './pages/Leads';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -40,6 +41,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Contacts />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/leads" element={<Leads />} />
           </Routes>
         </section>
       </div>

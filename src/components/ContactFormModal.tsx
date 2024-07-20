@@ -20,7 +20,6 @@ function ContactFormModal({open, handleClose, contact} : {
   const client = useApolloClient();
 
   const saveContact = () => {
-    console.log(id, firstName, lastName, companyName, emails, phones)
     saveContactFunc({
       variables: { id, firstName, lastName, companyName, emails, phones },
       onCompleted: () => {
