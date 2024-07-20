@@ -18,6 +18,12 @@ function LeadFormModal({open, handleClose, lead} : {
   const [saveLeadFunc, { data, loading, error }] = useMutation(SAVE_LEAD_QUERY);
   const client = useApolloClient();
 
+  const initLeadNameByContact = (contact: IContact) => {
+    if (!name) {
+      setName(`${contact.firstName} ${contact.lastName}`)
+    }
+  }
+
   const saveLead = () => {
     saveLeadFunc({
       variables: { id, name, contacts },
@@ -55,7 +61,7 @@ function LeadFormModal({open, handleClose, lead} : {
           </IconButton>
         </div>
         <div id="modal-modal-description" className="p-4 w-full max-h-[calc(100vh-300px)] overflow-y-auto">
-          <LeadContactsForm contacts={contacts} setContacts={setContacts} />
+          <LeadContactsForm contacts={contacts} setContacts={setContacts} initLeadNameByContact={initLeadNameByContact} />
           <h2 className="text-xl font-semibold m-1 mt-5">Lead Info</h2>
           <div className="flex justify-between w-full my-4">
             <Box className="m-1 w-full">
