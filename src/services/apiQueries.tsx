@@ -131,6 +131,22 @@ export const SAVE_LEAD_QUERY = gql`
   }
 `;
 
+export const CREATE_LEADS_FROM_CONTACTS_QUERY = gql`
+  mutation createLeadsFromContacts(
+    $contactIds: [ID!]!,
+    $stageId: ID!,
+    $assigneeId: ID!
+  ) {
+    createLeadsFromContacts(input: {
+      contactIds: $contactIds,
+      stageId: $stageId,
+      assigneeId: $assigneeId
+    }) {
+      success
+    }
+  }
+`;
+
 export const DELETE_LEAD_QUERY = gql`
   mutation deleteLeads(
     $ids: [ID!]!

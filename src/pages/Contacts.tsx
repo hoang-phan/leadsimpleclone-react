@@ -8,6 +8,7 @@ import { useApolloClient, useQuery, useMutation } from '@apollo/client';
 import { GET_CONTACTS_QUERY, DELETE_CONTACT_QUERY } from '../services/apiQueries';
 import { IContact } from '../services/types'
 import ContactFormModal from '../components/ContactFormModal';
+import CreateLeadsFromContactsFormModal from '../components/CreateLeadsFromContactsFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import applicationContext from '../services/applicationContext';
 
@@ -19,6 +20,7 @@ function Contacts() {
   const [contacts, setContacts] = useState<{node: IContact}[]>([]);
   const [currentContact, setCurrentContact] = useState<IContact | undefined>(undefined);
   const [newContactOpen, setNewContactOpen] = useState<boolean>(false);
+  const [createLeadsFromContactsOpen, setCreateLeadsFromContactsOpen] = useState<boolean>(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false);
   const { setPageTitle } = useContext(applicationContext);
   const currentSelectedIds = contacts.filter(({ node }: { node: IContact }) => selected[node.id]).map(({ node }) => node.id);
@@ -98,7 +100,7 @@ function Contacts() {
             <Button
               className="bg-[#0E4EB0] !normal-case !font-semibold"
               variant="contained"
-              onClick={() => alert("Under construction")}
+              onClick={() => setCreateLeadsFromContactsOpen(true)}
             >
               Create Leads
             </Button>
@@ -146,6 +148,14 @@ function Contacts() {
         handleClose={() => {
           setNewContactOpen(false);
           setCurrentContact(undefined);
+        }}
+      />
+      <CreateLeadsFromContactsFormModal
+        open={createLeadsFromContactsOpen}
+        contactIds={currentSelectedIds}
+        handleClose={() => {
+          setCreateLeadsFromContactsOpen(false);
+          updateAllSelected(false);
         }}
       />
       <ConfirmDialog
