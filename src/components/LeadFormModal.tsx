@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Typography, IconButton, TextField, Button, MenuItem, InputLabel, FormControl } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Modal, Box, Typography, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import LeadContactsForm from './LeadContactsForm';
 import { IContact, ILead, IUser, IStage } from '../services/types';
 import { SAVE_LEAD_QUERY, GET_LEADS_QUERY, GET_USERS_QUERY, GET_STAGES_QUERY } from '../services/apiQueries';
-import { useApolloClient, useMutation, useQuery } from '@apollo/client';
+import LSTextField from '../components/LSTextField';
+import LSSelect from '../components/LSSelect';
 
 function LeadFormModal({open, handleClose, lead} : {
   open: boolean, handleClose: () => void, lead?: ILead
@@ -28,7 +29,7 @@ function LeadFormModal({open, handleClose, lead} : {
 
   const saveLead = () => {
     saveLeadFunc({
-      variables: { id, name, contacts },
+      variables: { id, name, contacts, assignee, stage },
       onCompleted: () => {
         handleClose();
         setName("");
@@ -39,6 +40,9 @@ function LeadFormModal({open, handleClose, lead} : {
       }
     });
   };
+
+  const assigneeOptions = usersData ? usersData.users.map((user: IUser) => ({ value: user.id, label: user.email })) : [];
+  const stageOptions = stagesData ? stagesData.stages.map((stage: IStage) => ({ value: stage.id, label: stage.name, style: { color: stage.color, fontWeight: 600 } })) : [];
 
   useEffect(() => {
     setName(lead?.name || "");
@@ -67,45 +71,34 @@ function LeadFormModal({open, handleClose, lead} : {
           <h2 className="text-xl font-semibold m-1 mt-5">Lead Info</h2>
           <div className="flex justify-between w-full my-4">
             <Box className="m-1 w-full">
-              <TextField
+              <LSTextField
                 label="Name"
-                variant="outlined"
-                className="bg-[#E9ECF0] font-semibold w-full"
-                onChange={({ target }) => setName(target.value)}
+                onChange={(name) => setName(name)}
                 value={name}
+                required={true}
               />
             </Box>
           </div>
           <div className="flex justify-between w-full my-4">
             <Box className="m-1 w-[50%]">
-              <FormControl className="w-full bg-[#E9ECF0]">
-                <InputLabel id="assignee-label">Assignee</InputLabel>
-                <Select
-                  label="Assignee"
-                  labelId={`assignee-label`}
-                  value={assignee.id}
-                  onChange={({ target }) => setAssignee({ id: target.value } as IUser)}
-                >
-                  {usersData && usersData.users.map((user: IUser) => (
-                    <MenuItem key={user.id} value={user.id}>{user.email}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <LSSelect
+                required={true}
+                label="Assignee"
+                id="assignee"
+                value={assignee.id}
+                onChange={(value) => setAssignee({id: value } as IUser)}
+                options={assigneeOptions}
+              />
             </Box>
             <Box className="m-1 w-[50%]">
-              <FormControl className="w-full bg-[#E9ECF0]">
-                <InputLabel id="stage-label">Stage</InputLabel>
-                <Select
-                  label="Stage"
-                  labelId={`stage-label`}
-                  value={stage.id}
-                  onChange={({ target }) => setStage({ id: target.value } as IStage)}
-                >
-                  {stagesData && stagesData.stages.map((stage: IStage) => (
-                    <MenuItem key={stage.id} value={stage.id} style={{color: stage.color}}>{stage.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <LSSelect
+                required={true}
+                label="Stage"
+                id="stage"
+                value={stage.id}
+                onChange={(value) => setStage({ id: value } as IStage)}
+                options={stageOptions}
+              />
             </Box>
           </div>
         </div>

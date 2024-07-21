@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Tooltip, Checkbox, IconButton, Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import MergeTypeIcon from '@mui/icons-material/MergeType';
@@ -9,6 +9,7 @@ import { GET_CONTACTS_QUERY, DELETE_CONTACT_QUERY } from '../services/apiQueries
 import { IContact } from '../services/types'
 import ContactFormModal from '../components/ContactFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import applicationContext from '../services/applicationContext';
 
 function Contacts() {
   const { data, loading, error } = useQuery(GET_CONTACTS_QUERY);
@@ -19,6 +20,7 @@ function Contacts() {
   const [currentContact, setCurrentContact] = useState<IContact | undefined>(undefined);
   const [newContactOpen, setNewContactOpen] = useState<boolean>(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false);
+  const { setPageTitle } = useContext(applicationContext);
   const currentSelectedIds = contacts.filter(({ node }: { node: IContact }) => selected[node.id]).map(({ node }) => node.id);
   const numberOfSelected = currentSelectedIds.length;
   const client = useApolloClient();
@@ -28,6 +30,10 @@ function Contacts() {
       setContacts(data.contacts.edges);
     }
   }, [data]);
+
+  useEffect(() => {
+    setPageTitle("Contacts")
+  }, [])
 
   if (error) return <h1>Something went wrong</h1>;
   if (loading) return <h1>Loading...</h1>;

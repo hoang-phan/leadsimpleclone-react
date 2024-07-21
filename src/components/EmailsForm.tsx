@@ -1,9 +1,11 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import { Box, Button, IconButton, TextField, Card, MenuItem, InputLabel, FormControl } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Box, Button, IconButton, Card } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IEmail } from '../services/types';
+import { KIND_OPTIONS } from '../services/constants';
+import LSTextField from '../components/LSTextField';
+import LSSelect from '../components/LSSelect';
 
 function EmailForm({emails, setEmails} : {emails: IEmail[], setEmails: Dispatch<SetStateAction<IEmail[]>>}) {
   const addEmail = () => {
@@ -36,7 +38,7 @@ function EmailForm({emails, setEmails} : {emails: IEmail[], setEmails: Dispatch<
 
   return (
     <Card className="bg-white m-1">
-      <h4 className="text-base font-semibold m-4 mb-0">Email Address</h4>
+      <h4 className="text-base font-semibold m-4 mb-0">Email Addresses</h4>
       {emails.map((email, index) => {
         if (emails[index]._destroy === "1") {
           return <div />
@@ -45,26 +47,24 @@ function EmailForm({emails, setEmails} : {emails: IEmail[], setEmails: Dispatch<
         return (
           <div key={index} className="flex w-full justify-between items-center my-4">
             <Box className="w-[70%] mx-4">
-              <TextField label="Email" className="w-full bg-[#E9ECF0]" value={email.value} onChange={({ target }) => setEmailValue(index, target.value)}/>
+              <LSTextField
+                label="Email"
+                value={email.value}
+                onChange={(value) => setEmailValue(index, value)}
+                required={true}
+              />
             </Box>
             <Box className="w-[30%] mx-4">
-              <FormControl className="w-full bg-[#E9ECF0]">
-                <InputLabel id={`kind-label-${index}`}>Kind</InputLabel>
-                <Select
-                  label="Kind"
-                  labelId={`kind-label-${index}`}
-                  value={email.kind}
-                  onChange={({ target }) => setEmailKind(index, target.value)}
-                >
-                  <MenuItem value="personal">Personal</MenuItem>
-                  <MenuItem value="work">Work</MenuItem>
-                  <MenuItem value="spouse">Spouse</MenuItem>
-                  <MenuItem value="partner">Partner</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
+              <LSSelect
+                label="Kind"
+                id={`kind-${index}`}
+                value={email.kind}
+                options={KIND_OPTIONS}
+                onChange={(value) => setEmailKind(index, value)}
+                required={true}
+              />
             </Box>
-            <IconButton onClick={() => removeEmail(index)}>
+            <IconButton className="!mb-6" onClick={() => removeEmail(index)}>
               <DeleteIcon />
             </IconButton>
           </div>

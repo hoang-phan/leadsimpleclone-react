@@ -82,7 +82,7 @@ export const DELETE_CONTACT_QUERY = gql`
 
 export const GET_LEADS_QUERY = gql`
   {
-    leads(first: 1) {
+    leads(first: 20) {
       edges {
         node {
           id
@@ -116,11 +116,15 @@ export const SAVE_LEAD_QUERY = gql`
     $id: ID,
     $name: String!,
     $contacts: [ContactInput!]
+    $assignee: UserInput!,
+    $stage: StageInput!
   ) {
     saveLead(input: {
       id: $id,
       name: $name,
-      contacts: $contacts
+      contacts: $contacts,
+      assignee: $assignee,
+      stage: $stage
     }) {
       id
     }

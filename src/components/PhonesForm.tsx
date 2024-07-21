@@ -1,9 +1,11 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import { Box, Button, IconButton, TextField, Card, MenuItem, InputLabel, FormControl } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Box, Button, IconButton, Card } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IPhone } from '../services/types';
+import { KIND_OPTIONS } from '../services/constants';
+import LSTextField from '../components/LSTextField';
+import LSSelect from '../components/LSSelect';
 
 function PhoneForm({phones, setPhones} : {phones: IPhone[], setPhones: Dispatch<SetStateAction<IPhone[]>>}) {
   const addPhone = () => {
@@ -45,26 +47,24 @@ function PhoneForm({phones, setPhones} : {phones: IPhone[], setPhones: Dispatch<
         return (
           <div key={index} className="flex w-full justify-between items-center my-4">
             <Box className="w-[70%] mx-4">
-              <TextField label="Phone" className="w-full bg-[#E9ECF0]" value={phone.value} onChange={({ target }) => setPhoneValue(index, target.value)}/>
+              <LSTextField
+                label="Phone"
+                value={phone.value}
+                onChange={(value) => setPhoneValue(index, value)}
+                required={true}
+              />
             </Box>
             <Box className="w-[30%] mx-4">
-              <FormControl className="w-full bg-[#E9ECF0]">
-                <InputLabel id={`kind-label-${index}`}>Kind</InputLabel>
-                <Select
-                  label="Kind"
-                  labelId={`kind-label-${index}`}
-                  value={phone.kind}
-                  onChange={({ target }) => setPhoneKind(index, target.value)}
-                >
-                  <MenuItem value="personal">Personal</MenuItem>
-                  <MenuItem value="work">Work</MenuItem>
-                  <MenuItem value="spouse">Spouse</MenuItem>
-                  <MenuItem value="partner">Partner</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
+              <LSSelect
+                label="Kind"
+                id={`kind-${index}`}
+                value={phone.kind}
+                options={KIND_OPTIONS}
+                onChange={(value) => setPhoneKind(index, value)}
+                required={true}
+              />
             </Box>
-            <IconButton onClick={() => removePhone(index)}>
+            <IconButton className="!mb-6" onClick={() => removePhone(index)}>
               <DeleteIcon />
             </IconButton>
           </div>

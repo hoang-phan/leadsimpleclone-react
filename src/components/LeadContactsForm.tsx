@@ -33,7 +33,7 @@ function LeadContactsForm({contacts, setContacts, initLeadNameByContact} : {
   const removeContact = (index: number) => {
     setContacts(contacts => {
       const newContacts = [...contacts];
-      newContacts[index] = { ...newContacts[index], _destroy: "1" };
+      newContacts.splice(index, 1);
       return newContacts;
     })
   }
@@ -91,7 +91,7 @@ function LeadContactsForm({contacts, setContacts, initLeadNameByContact} : {
       </div>
       
       <div className="w-full min-h-[70px]">
-        {contacts.map(contact => (
+        {contacts.map((contact, index) => (
           <Card key={contact.id} className="flex flex-col justify-center p-2 m-2 z-1">
             <Box className="flex h-[50px]">
               <Box className="flex h-full items-center justify-center">
@@ -106,18 +106,23 @@ function LeadContactsForm({contacts, setContacts, initLeadNameByContact} : {
               <InfoIcon className="text-[#888888] m-2" />
               <p>Lease Violations: 0</p>
             </Box>
-            <Box className="flex items-center mt-2">
-              <IconButton onClick={() => alert("Under construction")}>
-                <EditIcon className="text-[#888888]" />
-              </IconButton>
-              <IconButton onClick={() => alert("Under construction")}>
-                <FileCopyIcon className="text-[#888888]" />
-              </IconButton>
-              <IconButton onClick={() => alert("Under construction")}>
-                <StarIcon className="text-[#FFCC80]" />
-              </IconButton>
-              <IconButton onClick={() => alert("Under construction")}>
-                <CloudDownloadIcon className="text-[#888888]" />
+            <Box className="flex items-center justify-between mt-2">
+              <Box className="flex items-center">
+                <IconButton onClick={() => alert("Under construction")}>
+                  <EditIcon className="text-[#888888]" />
+                </IconButton>
+                <IconButton onClick={() => alert("Under construction")}>
+                  <FileCopyIcon className="text-[#888888]" />
+                </IconButton>
+                <IconButton onClick={() => alert("Under construction")}>
+                  <StarIcon className="text-[#FFCC80]" />
+                </IconButton>
+                <IconButton onClick={() => alert("Under construction")}>
+                  <CloudDownloadIcon className="text-[#888888]" />
+                </IconButton>
+              </Box>
+              <IconButton onClick={() => removeContact(index)}>
+                <CloseIcon />
               </IconButton>
             </Box>
           </Card>

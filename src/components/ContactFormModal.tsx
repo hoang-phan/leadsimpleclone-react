@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Typography, IconButton, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useApolloClient, useMutation } from '@apollo/client';
 import EmailsForm from './EmailsForm';
 import PhonesForm from './PhonesForm';
 import { IEmail, IPhone, IContact } from '../services/types';
 import { SAVE_CONTACT_QUERY, GET_CONTACTS_QUERY } from '../services/apiQueries';
-import { useApolloClient, useMutation } from '@apollo/client';
+import LSTextField from '../components/LSTextField';
 
 function ContactFormModal({open, handleClose, contact} : {
   open: boolean, handleClose: () => void, contact?: IContact
@@ -60,31 +61,25 @@ function ContactFormModal({open, handleClose, contact} : {
         <div id="modal-modal-description" className="p-4 w-full max-h-[calc(100vh-300px)] overflow-y-auto">
           <div className="flex justify-between w-full">
             <Box className="m-1 flex-1 max-w-[50%]">
-              <TextField
+              <LSTextField
                 label="First Name"
-                variant="outlined"
-                className="bg-[#E9ECF0] font-semibold w-full"
-                onChange={({ target }) => setFirstName(target.value)}
+                onChange={(value) => setFirstName(value)}
                 value={firstName}
               />
             </Box>
             <Box className="m-1 flex-1 max-w-[50%]">
-              <TextField
+              <LSTextField
                 label="Last Name"
-                variant="outlined"
-                className="bg-[#E9ECF0] font-semibold w-full"
-                onChange={({ target }) => setLastName(target.value)}
+                onChange={(value) => setLastName(value)}
                 value={lastName}
               />
             </Box>
           </div>
           <div className="flex justify-between w-full">
             <Box className="w-full m-1">
-              <TextField
+              <LSTextField
                 label="Company Name"
-                variant="outlined"
-                className="bg-[#E9ECF0] font-semibold w-full"
-                onChange={({ target }) => setCompanyName(target.value)}
+                onChange={(value) => setCompanyName(value)}
                 value={companyName}
               />
             </Box>
