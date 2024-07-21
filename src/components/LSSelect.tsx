@@ -16,7 +16,7 @@ const LSSelect = ({id, required, label, value, onChange, options}: {
         label={label}
         id={id}
         labelId={`label-${id}`}
-        value={value}
+        value={value || ""}
         onChange={({ target }) => onChange(target.value)}
         error={error}
         className="bg-[#E9ECF0]"
