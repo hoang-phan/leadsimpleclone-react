@@ -19,11 +19,13 @@ export type ISource = {
 
 export type IContact = {
   id: string;
+  name: string;
   firstName: string;
   lastName: string;
   companyName: string;
   createdAt: string;
   source: ISource;
+  leadsCount: number;
   emails: [IEmail];
   phones: [IPhone];
   _destroy: string;

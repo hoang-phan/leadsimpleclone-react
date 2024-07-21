@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Box, Typography, IconButton, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Modal, Box, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMutation, useQuery, useApolloClient } from '@apollo/client';
-import { IContact, ILead, IUser, IStage } from '../services/types';
+import { IUser, IStage } from '../services/types';
 import { GET_LEADS_QUERY, GET_USERS_QUERY, GET_STAGES_QUERY, CREATE_LEADS_FROM_CONTACTS_QUERY } from '../services/apiQueries';
 import LSSelect from '../components/LSSelect';
 

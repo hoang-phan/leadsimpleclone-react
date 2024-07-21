@@ -9,6 +9,7 @@ import { GET_CONTACTS_QUERY, DELETE_CONTACT_QUERY } from '../services/apiQueries
 import { IContact } from '../services/types'
 import ContactFormModal from '../components/ContactFormModal';
 import CreateLeadsFromContactsFormModal from '../components/CreateLeadsFromContactsFormModal';
+import MergeContactsFormModal from '../components/MergeContactsFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import applicationContext from '../services/applicationContext';
 
@@ -21,9 +22,11 @@ function Contacts() {
   const [currentContact, setCurrentContact] = useState<IContact | undefined>(undefined);
   const [newContactOpen, setNewContactOpen] = useState<boolean>(false);
   const [createLeadsFromContactsOpen, setCreateLeadsFromContactsOpen] = useState<boolean>(false);
+  const [mergeContactsOpen, setMergeContactsOpen] = useState<boolean>(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false);
   const { setPageTitle } = useContext(applicationContext);
-  const currentSelectedIds = contacts.filter(({ node }: { node: IContact }) => selected[node.id]).map(({ node }) => node.id);
+  const currentSelectedContacts = contacts.filter(({ node }: { node: IContact }) => selected[node.id]).map(({ node }) => node);
+  const currentSelectedIds = currentSelectedContacts.map(({ id }) => id);
   const numberOfSelected = currentSelectedIds.length;
   const client = useApolloClient();
 
@@ -108,7 +111,7 @@ function Contacts() {
               className="bg-[#0E4EB0] !normal-case !font-semibold !mx-2"
               variant="contained"
               disabled={numberOfSelected < 2}
-              onClick={() => alert("Under construction")}
+              onClick={() => setMergeContactsOpen(true)}
             >
               Merge
             </Button>
@@ -155,6 +158,14 @@ function Contacts() {
         contactIds={currentSelectedIds}
         handleClose={() => {
           setCreateLeadsFromContactsOpen(false);
+          updateAllSelected(false);
+        }}
+      />
+      <MergeContactsFormModal
+        open={mergeContactsOpen}
+        contacts={currentSelectedContacts}
+        handleClose={() => {
+          setMergeContactsOpen(false);
           updateAllSelected(false);
         }}
       />

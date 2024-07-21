@@ -9,6 +9,8 @@ export const GET_CONTACTS_QUERY = gql`
           firstName
           lastName
           companyName
+          name
+          leadsCount
           source {
             name
           }
@@ -141,6 +143,20 @@ export const CREATE_LEADS_FROM_CONTACTS_QUERY = gql`
       contactIds: $contactIds,
       stageId: $stageId,
       assigneeId: $assigneeId
+    }) {
+      success
+    }
+  }
+`;
+
+export const MERGE_CONTACTS_QUERY = gql`
+  mutation mergeContacts(
+    $contactIds: [ID!]!,
+    $primaryContactId: ID!
+  ) {
+    mergeContacts(input: {
+      contactIds: $contactIds,
+      primaryContactId: $primaryContactId
     }) {
       success
     }
