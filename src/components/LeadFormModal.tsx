@@ -11,10 +11,9 @@ import LSSelect from '../components/LSSelect';
 function LeadFormModal({open, handleClose, lead} : {
   open: boolean, handleClose: () => void, lead?: ILead
 }) {
-  const id = lead?.id;
   const [contacts, setContacts] = useState<IContact[]>([]);
-  const [assignee, setAssignee] = useState<IUser>({} as IUser);
-  const [stage, setStage] = useState<IStage>({} as IStage);
+  const [assigneeId, setAssigneeId] = useState<string>("");
+  const [stageId, setStageId] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [saveLeadFunc, { data, loading, error }] = useMutation(SAVE_LEAD_QUERY);
   const usersData = useQuery(GET_USERS_QUERY).data;
@@ -28,14 +27,16 @@ function LeadFormModal({open, handleClose, lead} : {
   }
 
   const saveLead = () => {
+    const contactIds = contacts.map((contact: IContact) => contact.id);
+
     saveLeadFunc({
-      variables: { id, name, contacts, assignee, stage },
+      variables: { name, contactIds, assigneeId, stageId },
       onCompleted: () => {
         handleClose();
         setName("");
         setContacts([]);
-        setAssignee({} as IUser);
-        setStage({} as IStage);
+        setAssigneeId("");
+        setStageId("");
         client.refetchQueries({include: [GET_LEADS_QUERY]});
       }
     });
@@ -43,13 +44,6 @@ function LeadFormModal({open, handleClose, lead} : {
 
   const assigneeOptions = usersData ? usersData.users.map((user: IUser) => ({ value: user.id, label: user.email })) : [];
   const stageOptions = stagesData ? stagesData.stages.map((stage: IStage) => ({ value: stage.id, label: stage.name, style: { color: stage.color, fontWeight: 600 } })) : [];
-
-  useEffect(() => {
-    setName(lead?.name || "");
-    setContacts(lead?.contacts || []);
-    setStage(lead?.stage || ({} as IStage));
-    setAssignee(lead?.assignee || ({} as IUser));
-  }, [lead])
 
   return (
     <Modal
@@ -61,7 +55,7 @@ function LeadFormModal({open, handleClose, lead} : {
     >
       <Box className="bg-white max-w-screen-sm max-h-[calc(100%-64px)] w-[810px]">        
         <div className="flex justify-between items-center">
-          <h1 id="modal-modal-title" className="text-2xl font-semibold m-1 p-4">{id ? 'Update' : 'Create'} Lead</h1>
+          <h1 id="modal-modal-title" className="text-2xl font-semibold m-1 p-4">Create Lead</h1>
           <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
@@ -85,8 +79,8 @@ function LeadFormModal({open, handleClose, lead} : {
                 required={true}
                 label="Assignee"
                 id="assignee"
-                value={assignee.id}
-                onChange={(value) => setAssignee({id: value } as IUser)}
+                value={assigneeId}
+                onChange={(value) => setAssigneeId(value)}
                 options={assigneeOptions}
               />
             </Box>
@@ -95,8 +89,8 @@ function LeadFormModal({open, handleClose, lead} : {
                 required={true}
                 label="Stage"
                 id="stage"
-                value={stage.id}
-                onChange={(value) => setStage({ id: value } as IStage)}
+                value={stageId}
+                onChange={(value) => setStageId(value)}
                 options={stageOptions}
               />
             </Box>

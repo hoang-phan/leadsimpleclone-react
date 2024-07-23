@@ -6,7 +6,7 @@ const LSSelect = ({id, required, label, value, onChange, options}: {
   label: string,
   value: string,
   onChange: (value: string) => void,
-  options: ({value: string, label: string, style?: any})[]
+  options: ({value: string, label: string, style?: any})[],
 }) => {
   const error = required && !value;
   return (

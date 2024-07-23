@@ -113,20 +113,47 @@ export const GET_LEADS_QUERY = gql`
   }
 `;
 
+export const GET_LEAD_QUERY = gql`
+  query lead($id: ID!) {
+    lead(id: $id) {
+      id
+      name
+      emailsSent
+      callsMade
+      contacts {
+        id
+        firstName
+        lastName
+        companyName
+      }
+      stage {
+        id
+        name
+        color
+      }
+      assignee {
+        id
+        email
+      }
+      createdAt
+    }
+  }
+`;
+
 export const SAVE_LEAD_QUERY = gql`
   mutation saveLead(
     $id: ID,
-    $name: String!,
-    $contacts: [ContactInput!]
-    $assignee: UserInput!,
-    $stage: StageInput!
+    $name: String,
+    $contactIds: [ID!]
+    $assigneeId: ID,
+    $stageId: ID
   ) {
     saveLead(input: {
       id: $id,
       name: $name,
-      contacts: $contacts,
-      assignee: $assignee,
-      stage: $stage
+      contactIds: $contactIds,
+      assigneeId: $assigneeId,
+      stageId: $stageId
     }) {
       id
     }

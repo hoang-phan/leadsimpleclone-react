@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tooltip, Checkbox, IconButton, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -17,12 +18,12 @@ function Leads() {
   const [selected, setSelected] = useState<Record<string, any>>({});
   const [selectedAll, setSelectedAll] = useState<boolean>(false);
   const [leads, setLeads] = useState<{node: ILead}[]>([]);
-  const [currentLead, setCurrentLead] = useState<ILead | undefined>(undefined);
   const [newLeadOpen, setNewLeadOpen] = useState<boolean>(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false);
   const currentSelectedIds = leads.filter(({ node }: { node: ILead }) => selected[node.id]).map(({ node }) => node.id);
   const numberOfSelected = currentSelectedIds.length;
   const client = useApolloClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data?.leads?.edges) {
@@ -58,11 +59,6 @@ function Leads() {
   const allSelected = (result: Record<string, any>) => (
     leads.every(({ node }: { node: ILead }) => result[node.id])
   );
-
-  const openLeadForm = (lead?: ILead) => {
-    setCurrentLead(lead);
-    setNewLeadOpen(true);
-  };
 
   const deleteLeads = (ids: String[]) => {
     deleteFunction({
@@ -149,11 +145,7 @@ function Leads() {
       </div>
       <LeadFormModal
         open={newLeadOpen}
-        lead={currentLead}
-        handleClose={() => {
-          setNewLeadOpen(false);
-          setCurrentLead(undefined);
-        }}
+        handleClose={() => setNewLeadOpen(false)}
       />
       <ConfirmDialog
         open={confirmDeleteOpen}
@@ -183,7 +175,7 @@ function Leads() {
             <tbody className="text-sm">
               {leads.map(({node}: {node: ILead}) => {
                 return(
-                  <tr key={node.id} onClick={() => openLeadForm(node)} className={`hover:bg-[#EEEEEE] ${selected[node.id] && 'bg-[#EEEEEE]'}`}>
+                  <tr key={node.id} onClick={() => navigate(`/leads/${node.id}`)} className={`hover:bg-[#EEEEEE] ${selected[node.id] && 'bg-[#EEEEEE]'}`}>
                     <td onClick={(event) => event.stopPropagation()} className="p-[16px] border-b border-grey">
                       <Checkbox onChange={() => toggleSelectedRow(node.id)} checked={!!selected[node.id]}/>
                     </td>
