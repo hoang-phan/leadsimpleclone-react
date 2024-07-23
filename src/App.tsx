@@ -47,6 +47,7 @@ function App() {
           <Navbar logout={logout} email={userEmail} />
           <section className="w-[calc(100%-250px)] absolute top-0 right-0 bottom-0 bg-white overflow-scroll">
             <Routes>
+              <Route path="/" element={<Contacts />} />
               <Route path="/leads/:id" element={<Lead />} />
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/leads" element={<Leads />} />
